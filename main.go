@@ -7,7 +7,6 @@ import (
   "os"
   "encoding/json"
   "io/ioutil"
-  "os/user"
   "strings"
 )
 
@@ -59,11 +58,11 @@ func DoPush(push *Push, token string) {
 }
 
 func GetToken() (string, error) {
-  usr, err := user.Current()
+  dir, err := exec.Command("bash", "-c", "echo -n $HOME").Output()
   if err != nil {
-    return "", err  
+    return "", err
   }
-  res, err := ioutil.ReadFile(usr.HomeDir + "/.longrun-token")
+  res, err := ioutil.ReadFile(string(dir) + "/.longrun-token")
   return string(res), err
 }
 
